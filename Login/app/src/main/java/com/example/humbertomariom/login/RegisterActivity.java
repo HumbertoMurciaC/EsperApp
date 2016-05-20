@@ -88,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             ReturnLogin();
 
                         }else{
-                            Log.e("Respuesta", "Erros: "+response);
+                            Toast.makeText(getApplicationContext(), "Usuario ya existe!, por favor ingrese otro", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -133,6 +133,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void ReturnLogin(){
+
         startActivity(new Intent(this, LoginActivity.class));
     }
 

@@ -1,21 +1,16 @@
 package com.example.humbertomariom.login;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
@@ -29,11 +24,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -48,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPassword;
     private Button buttonLogin;
     private TextView textViewRegister;
-    //AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
+
 
     private String username;
     private String password;
@@ -102,17 +95,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             openProfile();
 
                         }else{
-                            //Alert dialogo
-                          /*  dialogo.setTitle("Alerta");
-                            dialogo.setMessage("Contraseña o Correo no validos");
-                            dialogo.setCancelable(false);
-                            dialogo.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogo, int id) {
 
-                                }
-                            });
+                            Toast.makeText(getApplicationContext(), "Contraseña o Correo no validos", Toast.LENGTH_LONG).show();
 
-                            dialogo.show();*/
                         }
                     }
                 },
@@ -155,7 +140,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void openProfile(){
-        startActivity(new Intent(this, ActivityUserProfile.class));
+
+        Intent intent = new Intent(this, ActivityUserProfile.class);
+        intent.putExtra(KEY_USERNAME, username);
+        startActivity(intent);
+
+
     }
 
     @Override
