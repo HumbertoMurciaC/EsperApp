@@ -13,22 +13,20 @@ import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.vision.barcode.Barcode;
-
-import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity {
 
-    private static final LatLng AMSTERDAM = new LatLng(52.37518, 4.895439);
-    private static final LatLng PARIS = new LatLng(48.856132, 2.352448);
-    private static final LatLng FRANKFURT = new LatLng(50.111772, 8.682632);
+
+
+
+    private static final LatLng ORIGEN = new LatLng(4.725338, -74.121072);
+    private static final LatLng DESTINO = new LatLng(4.597986, -74.075957);
+    //private static final LatLng JAVERIANA = new LatLng(4.626819, -74.064164);
     private GoogleMap map;
     private SupportMapFragment fragment;
     private LatLngBounds latlngBounds;
@@ -54,13 +52,13 @@ public class MapsActivity extends FragmentActivity {
                 if (!isTravelingToParis)
                 {
                     isTravelingToParis = true;
-                    findDirections( AMSTERDAM.latitude, AMSTERDAM.longitude,PARIS.latitude, PARIS.longitude, GMapV2Direction.MODE_DRIVING );
+                    findDirections( ORIGEN.latitude, ORIGEN.longitude, DESTINO.latitude, DESTINO.longitude, GMapV2Direction.MODE_DRIVING );
                 }
-                else
+                /*else
                 {
                     isTravelingToParis = false;
-                    findDirections( AMSTERDAM.latitude, AMSTERDAM.longitude, FRANKFURT.latitude, FRANKFURT.longitude, GMapV2Direction.MODE_DRIVING );
-                }
+                    findDirections( CARULLA.latitude, CARULLA.longitude, JAVERIANA.latitude, JAVERIANA.longitude, GMapV2Direction.MODE_DRIVING );
+                }*/
             }
         });
     }
@@ -69,7 +67,7 @@ public class MapsActivity extends FragmentActivity {
     protected void onResume() {
 
         super.onResume();
-        latlngBounds = createLatLngBoundsObject(AMSTERDAM, PARIS);
+        latlngBounds = createLatLngBoundsObject(ORIGEN, DESTINO);
         map.moveCamera(CameraUpdateFactory.newLatLngBounds(latlngBounds, width, height, 150));
 
     }
@@ -88,14 +86,14 @@ public class MapsActivity extends FragmentActivity {
         newPolyline = map.addPolyline(rectLine);
         if (isTravelingToParis)
         {
-            latlngBounds = createLatLngBoundsObject(AMSTERDAM, PARIS);
+            latlngBounds = createLatLngBoundsObject(ORIGEN, DESTINO);
             map.animateCamera(CameraUpdateFactory.newLatLngBounds(latlngBounds, width, height, 150));
         }
-        else
+        /*else
         {
-            latlngBounds = createLatLngBoundsObject(AMSTERDAM, FRANKFURT);
+            latlngBounds = createLatLngBoundsObject(CARULLA, JAVERIANA);
             map.animateCamera(CameraUpdateFactory.newLatLngBounds(latlngBounds, width, height, 150));
-        }
+        }*/
 
     }
     private void getSreenDimanstions()
