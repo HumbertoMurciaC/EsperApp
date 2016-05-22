@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Login</string>
+    <string name="app_name">EsperApp</string>
+    <string name="EntidadesPrompt">Entidades</string>
 </resources>

@@ -6,12 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
@@ -26,20 +25,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class ActivityUserProfile extends AppCompatActivity {
 
-    private TextView textView;
+public class ActivityUserProfile extends AppCompatActivity implements View.OnClickListener{
 
+    private TextView textViewUsername;
     private Spinner spinner;
-
-
     private List<Entidad> listaEntidades;
+    private Button buttonEntidad;
+    ArrayAdapter adapter;
 
 
     private static String TAG = "ActivityUserProfile";
@@ -69,6 +66,8 @@ public class ActivityUserProfile extends AppCompatActivity {
                     for(Entidad c: listaEntidades ) {
                         Log.d(TAG, "Correo:"+c.getCorreoContaco()+" - Dirección:"+c.getDireccion()+" - Nit:"+c.getIdNit()+" - Nombre:"+c.getNombre());
                     }
+
+                    CargarSpinner(listaEntidades);
 
                 } else {
                     Toast.makeText(getApplicationContext(), "La lista esta vacia", Toast.LENGTH_LONG).show();
@@ -109,25 +108,59 @@ public class ActivityUserProfile extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    public void CargarSpinner(List<Entidad> listaEntidades){
+        // Create an ArrayAdapter using the string array and a default spinner layout
+
+        List<String> Arreglo = new ArrayList<String>();
+        int i=1;
+        for(Entidad c: listaEntidades ) {
+            Arreglo.add(c.getNombre());
+        }
+        Log.d(TAG,"tam: "+Arreglo.size());
+
+        adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Arreglo);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_userprofile);
+
+        buttonEntidad = (Button) findViewById(R.id.buttonEntidades);
+
+        buttonEntidad.setOnClickListener(this);
 
         spinner = (Spinner)findViewById(R.id.spinnerEntidades);
 
-        textView = (TextView) findViewById(R.id.textViewUsername);
+        textViewUsername = (TextView) findViewById(R.id.textViewUsername);
 
         Intent intent = getIntent();
 
-        textView.setText("Welcome User " + intent.getStringExtra(LoginActivity.KEY_USERNAME));
+        textViewUsername.setText("Welcome User " + intent.getStringExtra(LoginActivity.KEY_USERNAME));
 
         cargarEntidades();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.buttonEntidades:
+
+                startActivity(new Intent(this, ActivitySede.class));
+
+                break;
 
 
+        }
     }
 
 

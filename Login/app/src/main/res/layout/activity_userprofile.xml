@@ -9,18 +9,54 @@
     android:paddingBottom="16dp"
     tools:context=".ActivityUserProfile">
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/esperapplogo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text"
+        android:text="Usuario"
         android:id="@+id/textViewUsername"
-        android:layout_gravity="center_horizontal" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#999d9e"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="left" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Entidades"
+        android:textSize="30sp"
+        android:textColor="#00CCFF"
+        android:textStyle="bold"
+        android:layout_gravity="left" />
 
     <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/spinnerEntidades">
+
+        android:id="@+id/spinnerEntidades"
+        android:prompt="@string/EntidadesPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="#ff6f00">
+
     </Spinner>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar"
+        android:id="@+id/buttonEntidades"
+        android:layout_marginTop="40dp"
+        android:background="#00CCFF"
+        android:textColor="#ffffff" />
 
 </LinearLayout>
