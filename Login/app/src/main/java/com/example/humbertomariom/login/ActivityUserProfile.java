@@ -27,7 +27,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+
 
 
 public class ActivityUserProfile extends AppCompatActivity implements View.OnClickListener{
@@ -37,7 +42,8 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
     private List<Entidad> listaEntidades;
     private Button buttonEntidad;
     ArrayAdapter adapter;
-
+    public static String NomEntidad="";
+    public static String Nit="";
 
     private static String TAG = "ActivityUserProfile";
 
@@ -64,7 +70,7 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
                 if (!listaEntidades.isEmpty()) {
 
                     for(Entidad c: listaEntidades ) {
-                        Log.d(TAG, "Correo:"+c.getCorreoContaco()+" - Dirección:"+c.getDireccion()+" - Nit:"+c.getIdNit()+" - Nombre:"+c.getNombre());
+                        //Log.d(TAG, "Correo:"+c.getCorreoContaco()+" - Dirección:"+c.getDireccion()+" - Nit:"+c.getIdNit()+" - Nombre:"+c.getNombre());
                     }
 
                     CargarSpinner(listaEntidades);
@@ -127,6 +133,9 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
     }
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,6 +156,38 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
 
         cargarEntidades();
 
+
+                spinner.setOnItemSelectedListener(new  OnItemSelectedListener() {
+            public  void  onItemSelected(AdapterView<?> parent, View view, int  position, long  i) {
+
+                NomEntidad=spinner.getSelectedItem().toString();
+
+                Nit=DevolverNit(NomEntidad);
+
+
+            }
+
+            public  void  onNothingSelected(AdapterView<?> parent) {
+                // We don't need to worry about nothing being selected, since Spinners don't allow
+                // this.
+            }
+        });
+
+
+
+
+    }
+
+    String DevolverNit(String nom){
+
+        for(Entidad c: listaEntidades ) {
+            if(nom.equalsIgnoreCase(c.getNombre())){
+                return c.getIdNit();
+            }
+        }
+
+        return "";
+
     }
 
     @Override
@@ -155,13 +196,19 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.buttonEntidades:
 
-                startActivity(new Intent(this, ActivitySede.class));
+                Intent intent = new Intent(this, ActivitySede.class);
+                intent.putExtra(NomEntidad,NomEntidad);
+                intent.putExtra(Nit,Nit);
+                startActivity(intent);
 
                 break;
 
 
         }
     }
+
+
+
 
 
 }

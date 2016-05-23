@@ -1,4 +1,4 @@
-package com.example.humbertomariom.Mapas;
+package com.example.humbertomariom.login;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.humbertomariom.Mapas.GMapV2Direction;
+import com.example.humbertomariom.Mapas.GetDirectionsAsyncTask;
 import com.example.humbertomariom.login.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,10 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import java.util.logging.Handler;
 
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity{
 
     private LatLng ORIGEN = new LatLng(4.627155, -74.063881);
     private LatLng DESTINO = new LatLng(4.641726, -74.074601);

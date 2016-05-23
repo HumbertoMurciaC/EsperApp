@@ -1,12 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:orientation="vertical"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entidad: "
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#080909"
+        android:layout_marginTop="2dp"
+        android:layout_gravity="left" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre Entidad"
+        android:id="@+id/textViewNomEntidad"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="#0c1472" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sedes:"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:textColor="#64c6f0" />
+
+    <Spinner
+
+        android:id="@+id/spinnerSedes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="#ff6f00">
+
+    </Spinner>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Servicios:"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:textColor="#64c6f0" />
+    <Spinner
+
+        android:id="@+id/spinnerServicios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="#ff6f00">
+
+    </Spinner>
 
     <Button
         android:layout_width="191dp"
@@ -14,6 +75,18 @@
         android:text="MAPAS"
         android:id="@+id/Mapa"
         android:gravity="center"
-        android:layout_marginTop="100dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#00CCFF"
+        android:textColor="#ffffff"/>
+    <Button
+        android:layout_width="191dp"
+        android:layout_height="wrap_content"
+        android:text="Turno"
+        android:id="@+id/Turno"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#00CCFF"
+        android:textColor="#ffffff"/>
 </LinearLayout>

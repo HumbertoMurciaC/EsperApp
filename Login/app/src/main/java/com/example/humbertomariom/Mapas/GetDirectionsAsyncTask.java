@@ -3,6 +3,8 @@ package com.example.humbertomariom.Mapas;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.example.humbertomariom.login.MapsActivity;
 import com.google.android.gms.maps.model.LatLng;
 import org.w3c.dom.Document;
 import java.util.ArrayList;
