@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
@@ -28,26 +28,40 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+
 
 public class ActivitySede extends AppCompatActivity implements View.OnClickListener {
 
     private Button botonmapa;
     private Spinner spinnerSedes;
+    private Spinner spinnerServicios;
     private List<Sede> listaSedes;
+    private List<String> listaServicios;
     ArrayAdapter adapter;
+    ArrayAdapter adapter2;
     private TextView textViewNomEntidad;
+    public static String DirSede = "";
+    public static StringTokenizer tokens;
+    public static double lat=0;
+    public static double lng=0;
+    public static String latstr="";
+    public static String lngstr2="";
 
-    String NomEntidad;
+
+
+    public static String NomEntidad;
 
     String nit;
 
     private static String TAG = "ActivitySede";
 
     public static final String REGISTER_URL = "http://192.168.40.1:8080/WebApplication1/PedirSedesXEntidad";
+
+    public static final String REGISTER_URL2 = "http://192.168.40.1:8080/WebApplication1/PedirServiciodesede";
 
 
 
@@ -118,6 +132,73 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
         requestQueue.add(stringRequest);
     }
 
+    public void cargarServicios(String IdSede) {
+
+
+        String data = REGISTER_URL2+"?"+"idSede="+IdSede;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, data, new Response.Listener<String>() {
+
+
+            public void onResponse(String response) {
+
+                Gson gson = new Gson();
+
+                Type type = new TypeToken<List<String>>() {
+                }.getType();
+
+
+                listaServicios = gson.fromJson(response,type);
+
+                Log.i(TAG, "Response data2:" + listaServicios.toString());
+
+                if (!listaSedes.isEmpty()) {
+
+                    for(String c: listaServicios ) {
+                        Log.d(TAG, "Servicio:"+c);
+                    }
+
+                    CargarSpinner2(listaServicios);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "La lista esta vacia", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Log.e(TAG, "Response error");
+                        if (error != null) {
+                            Log.e("Volley", "Error. HTTP Status Code:"+error.toString());
+                        }
+                        if (error instanceof TimeoutError) {
+                            Log.e("Volley", "NoConnectionError");
+                        }else if(error instanceof NoConnectionError){
+                            Log.e("Volley", "NoConnectionError");
+                        } else if (error instanceof AuthFailureError) {
+                            Log.e("Volley", "AuthFailureError");
+                        } else if (error instanceof ServerError) {
+                            Log.e("Volley", "ServerError");
+                        } else if (error instanceof NetworkError) {
+                            Log.e("Volley", "NetworkError");
+                        } else if (error instanceof ParseError) {
+                            Log.e("Volley", "ParseError");
+                        }
+                    }
+                })
+
+        {
+
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
 
     public void CargarSpinner(List<Sede> listaSedes){
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -137,22 +218,44 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public void CargarSpinner2(List<String> listaServicios){
+        // Create an ArrayAdapter using the string array and a default spinner layout
+
+        Log.d(TAG,"tam: "+listaServicios.size());
+
+        adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, listaServicios);
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSedes.setAdapter(adapter2);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sedes);
 
         botonmapa = (Button) findViewById(R.id.Mapa);
-        botonmapa.setOnClickListener(this);
+        botonmapa.setOnClickListener(new View.OnClickListener(){
+
+
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.Mapa:
+                        Intent Next = new Intent(ActivitySede.this, MapsActivity.class);
+                        startActivity(Next);
+                        break;
+                }
+            }
+        });
 
         Intent intent = getIntent();
-
-
-        NomEntidad=intent.getStringExtra(ActivityUserProfile.NomEntidad);
 
         nit=intent.getStringExtra(ActivityUserProfile.Nit);
 
         spinnerSedes = (Spinner)findViewById(R.id.spinnerSedes);
+        spinnerServicios  = (Spinner)findViewById(R.id.spinnerServicios);
 
         textViewNomEntidad = (TextView) findViewById(R.id.textViewNomEntidad);
 
@@ -160,6 +263,60 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
         cargarSedes(nit);
 
+        spinnerSedes.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() {
+            public  void  onItemSelected(AdapterView<?> parent, View view, int  position, long  i) {
+
+                NomEntidad=spinnerSedes.getSelectedItem().toString();
+
+                String IdSede= DevolverIdSede(NomEntidad);
+                DirSede = DevolverDir(NomEntidad);
+                tokens= new StringTokenizer(DirSede,",");
+                int nDatos = tokens.countTokens();
+                Log.e(TAG, "DireccionSede error"+DirSede);
+                latstr = tokens.nextToken();
+                lat=Double.valueOf(latstr).doubleValue();
+                lngstr2 = tokens.nextToken();
+                lng=Double.valueOf(lngstr2).doubleValue();
+                Log.e(TAG, "DireccionSede error:"+latstr+","+lngstr2);
+                cargarServicios(IdSede);
+
+
+
+
+            }
+            public  void  onNothingSelected(AdapterView<?> parent) {
+                // We don't need to worry about nothing being selected, since Spinners don't allow
+                // this.
+            }
+        });
+
+
+    }
+
+    public String getDirSede(){
+        return DirSede;
+    }
+    String DevolverIdSede(String nom){
+
+        for(Sede c: listaSedes ) {
+            if(nom.equalsIgnoreCase(c.getNombre())){
+                return c.getIdSede();
+            }
+        }
+
+        return "";
+
+    }
+
+    String DevolverDir(String nom){
+
+        for(Sede c: listaSedes ) {
+            if(nom.equalsIgnoreCase(c.getNombre())){
+                return c.getDireccion();
+            }
+        }
+
+        return "";
 
     }
 
@@ -171,7 +328,12 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
             case R.id.Mapa:
 
-                startActivity(new Intent(this, MapsActivity.class));
+
+                Intent intent  = new Intent(ActivitySede.this,MapsActivity.class);
+                intent.putExtra("La",lat);
+                intent.putExtra("Lg",lng);
+                intent.putExtra(NomEntidad,NomEntidad);
+                startActivity(intent);
 
 
                 break;

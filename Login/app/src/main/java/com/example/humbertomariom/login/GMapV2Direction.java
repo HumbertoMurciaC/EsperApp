@@ -1,9 +1,14 @@
-package com.example.humbertomariom.Mapas;
+package com.example.humbertomariom.login;
 
-import android.util.Log;
+/**
+ * Created by Humberto Mario M on 23/05/2016.
+ */
+import java.io.InputStream;
+import java.util.ArrayList;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -13,14 +18,12 @@ import org.apache.http.protocol.HttpContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import java.io.InputStream;
-import java.util.ArrayList;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.google.android.gms.maps.model.LatLng;
 
+import android.content.Context;
+import android.util.Log;
 public class GMapV2Direction {
-
     public final static String MODE_DRIVING = "driving";
     public final static String MODE_WALKING = "walking";
 
@@ -46,9 +49,6 @@ public class GMapV2Direction {
         }
         return null;
     }
-
-
-    //---------------------
 
     public String getDurationText (Document doc) {
         NodeList nl1 = doc.getElementsByTagName("duration");

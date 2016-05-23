@@ -1,16 +1,20 @@
-package com.example.humbertomariom.Mapas;
+package com.example.humbertomariom.login;
+
+/**
+ * Created by Humberto Mario M on 23/05/2016.
+ */
+import java.util.ArrayList;
+import java.util.Map;
+
+import org.w3c.dom.Document;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
-import com.example.humbertomariom.login.MapsActivity;
-import com.google.android.gms.maps.model.LatLng;
-import org.w3c.dom.Document;
-import java.util.ArrayList;
-import java.util.Map;
-
-public class GetDirectionsAsyncTask extends AsyncTask<Map<String, String>, Object, ArrayList<LatLng>>{
+public class GetDirectionsAsyncTask extends AsyncTask<Map<String, String>, Object, ArrayList<LatLng>>
+{
 
     public static final String USER_CURRENT_LAT = "user_current_lat";
     public static final String USER_CURRENT_LONG = "user_current_long";
@@ -30,7 +34,7 @@ public class GetDirectionsAsyncTask extends AsyncTask<Map<String, String>, Objec
     public void onPreExecute()
     {
         progressDialog = new ProgressDialog(activity);
-        progressDialog.setMessage("Calculating directions");
+        progressDialog.setMessage("CALCULANDO DIRECCIÓN");
         progressDialog.show();
     }
 
@@ -47,6 +51,7 @@ public class GetDirectionsAsyncTask extends AsyncTask<Map<String, String>, Objec
             processException();
         }
     }
+
     @Override
     protected ArrayList<LatLng> doInBackground(Map<String, String>... params)
     {
@@ -69,8 +74,7 @@ public class GetDirectionsAsyncTask extends AsyncTask<Map<String, String>, Objec
 
     private void processException()
     {
-        Toast.makeText(activity, "Error retriving data", 3000).show();
+        Toast.makeText(activity, "Error retriving data", Toast.LENGTH_LONG).show();
     }
-
 
 }
