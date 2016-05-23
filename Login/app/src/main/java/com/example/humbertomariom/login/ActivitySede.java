@@ -5,6 +5,7 @@ package com.example.humbertomariom.login;
  */
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,19 +29,23 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 
-public class ActivitySede extends AppCompatActivity implements View.OnClickListener {
+public class ActivitySede extends AppCompatActivity implements View.OnClickListener{
+
 
     private Button botonmapa;
+    private Button botonturno;
     private Spinner spinnerSedes;
     private Spinner spinnerServicios;
     private List<Sede> listaSedes;
-    private List<String> listaServicios;
+    private List<Servicio> listaServicios;
     ArrayAdapter adapter;
     ArrayAdapter adapter2;
     private TextView textViewNomEntidad;
@@ -54,6 +59,9 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
 
     public static String NomEntidad;
+    public static String IDSEDE;
+    public static String NomServicio;
+    public static String IDSERVICIO;
 
     String nit;
 
@@ -61,7 +69,7 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
     public static final String REGISTER_URL = "http://192.168.40.1:8080/WebApplication1/PedirSedesXEntidad";
 
-    public static final String REGISTER_URL2 = "http://192.168.40.1:8080/WebApplication1/PedirServiciodesede";
+    public static final String REGISTER_URL2 = "http://192.168.40.1:8080/WebApplication1/PedirServicioDeSede";
 
 
 
@@ -134,6 +142,7 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
     public void cargarServicios(String IdSede) {
 
+        IdSede.trim();
 
         String data = REGISTER_URL2+"?"+"idSede="+IdSede;
 
@@ -144,18 +153,16 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
                 Gson gson = new Gson();
 
-                Type type = new TypeToken<List<String>>() {
+                Type type = new TypeToken<List<Servicio>>() {
                 }.getType();
 
 
                 listaServicios = gson.fromJson(response,type);
 
-                Log.i(TAG, "Response data2:" + listaServicios.toString());
+                if (!listaServicios.isEmpty()) {
 
-                if (!listaSedes.isEmpty()) {
-
-                    for(String c: listaServicios ) {
-                        Log.d(TAG, "Servicio:"+c);
+                    for(Servicio c: listaServicios ) {
+                        Log.d(TAG, "Servicio:"+c.getTipo());
                     }
 
                     CargarSpinner2(listaServicios);
@@ -218,15 +225,20 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void CargarSpinner2(List<String> listaServicios){
+    public void CargarSpinner2(List<Servicio> listaServicios){
         // Create an ArrayAdapter using the string array and a default spinner layout
 
-        Log.d(TAG,"tam: "+listaServicios.size());
+        List<String> Arreglo = new ArrayList<String>();
+        int i=1;
+        for(Servicio c: listaServicios ) {
+            Arreglo.add(c.getTipo());
+        }
+        Log.d(TAG,"tam: "+Arreglo.size());
 
-        adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, listaServicios);
+        adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Arreglo);
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSedes.setAdapter(adapter2);
+        spinnerServicios.setAdapter(adapter2);
 
     }
 
@@ -249,6 +261,9 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+
+        botonturno=(Button) findViewById(R.id.Turno);
+        botonturno.setOnClickListener(this);
 
         Intent intent = getIntent();
 
@@ -290,8 +305,25 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        spinnerServicios.setOnItemSelectedListener(new  AdapterView.OnItemSelectedListener() {
+            public  void  onItemSelected(AdapterView<?> parent, View view, int  position, long  i) {
+
+                NomServicio=spinnerServicios.getSelectedItem().toString();
+
+
+            }
+            public  void  onNothingSelected(AdapterView<?> parent) {
+                // We don't need to worry about nothing being selected, since Spinners don't allow
+                // this.
+            }
+        });
+
+
 
     }
+
+
+
 
     public String getDirSede(){
         return DirSede;
@@ -320,6 +352,18 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    String IdServicio(String nom){
+
+        for(Servicio c: listaServicios ) {
+            if(nom.equalsIgnoreCase(c.getTipo())){
+                return c.getIdServicio();
+            }
+        }
+
+        return "";
+
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -334,6 +378,18 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("Lg",lng);
                 intent.putExtra(NomEntidad,NomEntidad);
                 startActivity(intent);
+
+
+                break;
+
+            case R.id.Turno:
+
+
+                Intent intent2  = new Intent(ActivitySede.this,TurnoActivity.class);
+
+                intent2.putExtra(IDSEDE,DevolverIdSede(NomEntidad));
+                intent2.putExtra(IDSERVICIO,IdServicio(NomServicio));
+                startActivity(intent2);
 
 
                 break;
