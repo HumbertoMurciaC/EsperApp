@@ -79,7 +79,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         direccion = (TextView) findViewById(R.id.Direccion);
         Intent intent = getIntent();
         DirSede=intent.getStringExtra(ActivitySede.DirSede);
-        NombreSed = intent.getStringExtra(ActivitySede.NomEntidad);
+        //NombreSed = intent.getStringExtra(ActivitySede.NomEntidad);
+        NombreSed = intent.getExtras().getString("NomEntidad");
         //String str1 = intent.getStringExtra(ActivitySede.latstr.trim());
         //String str2 = intent.getStringExtra(ActivitySede.lngstr2.trim());
         //Log.e(TAG, "DirMapa er****:"+str1+"*"+str2);
@@ -93,20 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         fragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         map = fragment.getMap();
 
-        bRegresar = (Button) findViewById(R.id.RegresarSede);
-        bRegresar.setOnClickListener(new View.OnClickListener(){
 
-
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.RegresarSede:
-                        Intent Next = new Intent(MapsActivity.this, ActivitySede.class);
-                        startActivity(Next);
-                        break;
-                }
-            }
-        });
 
         bNavigation = (Button) findViewById(R.id.bNavigation);
         bNavigation.setOnClickListener(new View.OnClickListener() {
@@ -244,10 +232,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         map.addMarker(new MarkerOptions().position(new LatLng(ORIGEN.latitude, ORIGEN.longitude)).title("Estoy Aqui"));
         nombreMDestino = NombreSed;
         if(nombreMDestino != null){
-            map.addMarker(new MarkerOptions().position(new LatLng(DESTINO.latitude, DESTINO.longitude)).title("Sucursal "+nombreMDestino));
+            map.addMarker(new MarkerOptions().position(new LatLng(DESTINO.latitude, DESTINO.longitude)).title("Sucursal "+NombreSed));
         }
         else {
-            map.addMarker(new MarkerOptions().position(new LatLng(DESTINO.latitude, DESTINO.longitude)).title("Sucursal BANCOLOMBIA"));
+            map.addMarker(new MarkerOptions().position(new LatLng(DESTINO.latitude, DESTINO.longitude)).title("Sucursal Desconocida"));
         }
         float[] dist = new float[1];
         Location.distanceBetween(ORIGEN.latitude, ORIGEN.longitude, DESTINO.latitude, DESTINO.longitude, dist);

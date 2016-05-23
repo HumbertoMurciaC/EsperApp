@@ -42,6 +42,8 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
     ArrayAdapter adapter;
     public static String NomEntidad="";
     public static String Nit="";
+    public static String CORREO="";
+    String Correo;
 
     private static String TAG = "ActivityUserProfile";
 
@@ -152,6 +154,8 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
 
         textViewUsername.setText("Welcome User " + intent.getStringExtra(LoginActivity.KEY_USERNAME));
 
+        Correo=intent.getStringExtra(LoginActivity.KEY_USERNAME);
+
         cargarEntidades();
 
 
@@ -197,6 +201,7 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
                 Intent intent = new Intent(this, ActivitySede.class);
                 intent.putExtra(NomEntidad,NomEntidad);
                 intent.putExtra(Nit,Nit);
+                intent.putExtra(CORREO,Correo);
                 startActivity(intent);
 
                 break;

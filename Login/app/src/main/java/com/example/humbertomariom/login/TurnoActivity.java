@@ -25,9 +25,12 @@ public class TurnoActivity extends AppCompatActivity {
 
     private static String TAG = "ActivityTurno";
     private Turno turno;
-    private String correo="";
+    private String correo1="";
     private String IdSede="";
     private String IdServicio="";
+
+
+
 
     public static final String REGISTER_URL = "http://192.168.40.1:8080/WebApplication1/PedirTurno";
 
@@ -48,6 +51,7 @@ public class TurnoActivity extends AppCompatActivity {
                 Gson gson = new Gson();
 
                 turno = gson.fromJson(response,Turno.class);
+
 
                 if (turno!=null) {
 
@@ -98,15 +102,16 @@ public class TurnoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_turno);
 
+
         Intent intent = getIntent();
+        IdSede=intent.getExtras().getString("IDSEDE");
+        IdServicio=intent.getExtras().getString("IDSERVICIO");
+        correo1 = intent.getExtras().getString("CORREO1");
+//
 
-        correo=intent.getStringExtra(LoginActivity.KEY_USERNAME);
-        IdSede=intent.getStringExtra(ActivitySede.IDSEDE);
-        IdServicio=intent.getStringExtra(ActivitySede.IDSERVICIO);
+        Log.e(TAG, "Correo: "+correo1+" Idsede: "+IdSede+" IdServicio: "+IdServicio);
 
-        Log.e(TAG, "Correo: "+correo+" Idsede: "+IdSede+" IdServicio: "+IdServicio);
-
-        pedirTurno(correo,IdSede,IdServicio);
+        pedirTurno(correo1,IdSede,IdServicio);
 
 
     }

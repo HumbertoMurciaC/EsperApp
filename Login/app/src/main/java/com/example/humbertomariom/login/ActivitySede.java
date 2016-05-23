@@ -4,6 +4,7 @@ package com.example.humbertomariom.login;
  * Created by Humberto Mario M on 21/05/2016.
  */
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 
-public class ActivitySede extends AppCompatActivity implements View.OnClickListener{
+public class ActivitySede extends AppCompatActivity{
 
 
     private Button botonmapa;
@@ -59,11 +60,14 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
 
     public static String NomEntidad;
-    public static String IDSEDE;
+    public static String IDSEDE="";
     public static String NomServicio;
-    public static String IDSERVICIO;
+    public static String IDSERVICIO="";
+    public static String CORREO1="";
+    public float distancia;
 
     String nit;
+    String correo;
 
     private static String TAG = "ActivitySede";
 
@@ -248,33 +252,75 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_sedes);
 
         botonmapa = (Button) findViewById(R.id.Mapa);
-        botonmapa.setOnClickListener(new View.OnClickListener(){
-
-
+        botonmapa.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
+            public void onClick(View view) {
+                switch (view.getId()) {
                     case R.id.Mapa:
-                        Intent Next = new Intent(ActivitySede.this, MapsActivity.class);
-                        startActivity(Next);
+                        if(distancia <= 3000){
+                            Intent intent  = new Intent(ActivitySede.this,MapsActivity.class);
+                            intent.putExtra("La",lat);
+                            intent.putExtra("Lg",lng);
+                            intent.putExtra("NomEntidad",NomEntidad);
+                            Toast.makeText(ActivitySede.this,"Puede solicitar turno",Toast.LENGTH_LONG).show();
+                            startActivity(intent);
+                        }else{
+                            String noPuede = "No puede accesar al mapa porque esta a: "+distancia+" m";
+                            Toast.makeText(ActivitySede.this,noPuede,Toast.LENGTH_LONG).show();
+                        }
+
+
                         break;
                 }
             }
         });
 
+
         botonturno=(Button) findViewById(R.id.Turno);
-        botonturno.setOnClickListener(this);
+        botonturno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+
+
+
+                    case R.id.Turno:
+
+
+                        Intent intent2  = new Intent(ActivitySede.this,TurnoActivity.class);
+
+                        String IDSE=DevolverIdSede(NomEntidad);
+                        String IDS=IdServicio(NomServicio);
+
+
+                        intent2.putExtra("IDSEDE",IDSE);
+                        intent2.putExtra("IDSERVICIO",IDS);
+                        intent2.putExtra("CORREO1",correo);
+                        startActivity(intent2);
+
+
+                        break;
+
+                }
+
+            }
+        });
 
         Intent intent = getIntent();
-
-        nit=intent.getStringExtra(ActivityUserProfile.Nit);
-
-        spinnerSedes = (Spinner)findViewById(R.id.spinnerSedes);
-        spinnerServicios  = (Spinner)findViewById(R.id.spinnerServicios);
 
         textViewNomEntidad = (TextView) findViewById(R.id.textViewNomEntidad);
 
         textViewNomEntidad.setText(intent.getStringExtra(ActivityUserProfile.NomEntidad));
+
+        nit=intent.getStringExtra(ActivityUserProfile.Nit);
+        correo=intent.getStringExtra(ActivityUserProfile.CORREO);
+
+        spinnerSedes = (Spinner)findViewById(R.id.spinnerSedes);
+        spinnerServicios  = (Spinner)findViewById(R.id.spinnerServicios);
+
+
+
+
 
         cargarSedes(nit);
 
@@ -292,6 +338,9 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
                 lat=Double.valueOf(latstr).doubleValue();
                 lngstr2 = tokens.nextToken();
                 lng=Double.valueOf(lngstr2).doubleValue();
+                float[] dist = new float[1];
+                Location.distanceBetween(4.627155, -74.063881,lat,lng,dist);
+                distancia = (dist[0]);
                 Log.e(TAG, "DireccionSede error:"+latstr+","+lngstr2);
                 cargarServicios(IdSede);
 
@@ -364,38 +413,7 @@ public class ActivitySede extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId()) {
-
-
-            case R.id.Mapa:
-
-
-                Intent intent  = new Intent(ActivitySede.this,MapsActivity.class);
-                intent.putExtra("La",lat);
-                intent.putExtra("Lg",lng);
-                intent.putExtra(NomEntidad,NomEntidad);
-                startActivity(intent);
-
-
-                break;
-
-            case R.id.Turno:
-
-
-                Intent intent2  = new Intent(ActivitySede.this,TurnoActivity.class);
-
-                intent2.putExtra(IDSEDE,DevolverIdSede(NomEntidad));
-                intent2.putExtra(IDSERVICIO,IdServicio(NomServicio));
-                startActivity(intent2);
-
-
-                break;
-
-        }
-    }
 
 
 
