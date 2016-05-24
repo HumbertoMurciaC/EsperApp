@@ -15,7 +15,8 @@
         android:icon="@drawable/esperapplogo"
         android:label="EsperApp"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".GlobalVariables">
 
         <activity
         android:name=".Splash"

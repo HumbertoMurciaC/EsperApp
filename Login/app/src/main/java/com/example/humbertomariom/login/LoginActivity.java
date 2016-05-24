@@ -72,6 +72,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         username = editTextUsername.getText().toString().trim();
         password = editTextPassword.getText().toString().trim();
 
+        GlobalVariables appState = ((GlobalVariables)getApplicationContext());
+        appState.setUserId(username);
+
         String data = LOGIN_URL+"?"+"nombre="+username+"&pass="+password;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, data,new Response.Listener<String>() {

@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,38 +34,45 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import java.util.StringTokenizer;
+
 /**
  * Created by Humberto Mario M on 23/05/2016.
  */
 public class TurnoActivity extends AppCompatActivity {
 
+
     private TextView textViewTurno;
+    private Button botoncancelar;
     private static String TAG = "ActivityTurno";
-    private String correo1="";
     private String IdSede="";
     private String IdServicio="";
     private String nomEntidad="";
     private String nomServicio="";
     private String nomSede="";
     private String TurnOOO="";
-    String NumeroTurno ="";
+
+
+
 
     ImageView qrCodeImageview;
     String QRcode;
+    String IDT="";
     public final static int WIDTH=500;
 
 
-    public void setNumeroTurno(String numeroTurno) {
-        NumeroTurno = numeroTurno;
-    }
+
 
     public static final String REGISTER_URL = "http://192.168.40.1:8080/WebApplication1/PedirTurno";
+
+    public static final String REGISTER_URL2 = "http://192.168.40.1:8080/WebApplication1/CancelarTurno";
 
     public void pedirTurno(String correo, String IdSede, String IdServicio) {
 
         correo.trim();
         IdSede.trim();
         IdServicio.trim();
+
 
 
         String data = REGISTER_URL+"?"+"idCorreo="+correo+"&idSede="+IdSede+"&idServicio="+IdServicio;
@@ -81,14 +90,16 @@ public class TurnoActivity extends AppCompatActivity {
                 //Casteo a Gson
                 Gson gson = new Gson();
 
-               login obj = gson.fromJson(response,login.class);
+                login obj = gson.fromJson(response,login.class);
 
                 if(!obj.getResponse().equalsIgnoreCase("")){
 
                     Log.e(TAG,"Turno: "+obj.getResponse());
 
-                    QRcode="Turno: "+obj.getResponse();
-                    textViewTurno.setText(QRcode);
+                   // QRcode=obj.getResponse();
+                    textViewTurno.setText(obj.getResponse());
+
+
 
 
                 }else{
@@ -130,7 +141,61 @@ public class TurnoActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+
     }
+
+    public void CancelarTurno(String IdTurno) {
+
+
+        String data = REGISTER_URL2+"?"+"idTurno="+IdTurno;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, data, new Response.Listener<String>() {
+
+
+            public void onResponse(String response) {
+
+                Log.i(TAG, "Response ok");
+                if(response != null){
+                    Log.i(TAG, "Response data");
+                }
+
+            }
+
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Log.e(TAG, "Response error");
+                        if (error != null) {
+                            Log.e("Volley", "Error. HTTP Status Code:"+error.toString());
+                        }
+                        if (error instanceof TimeoutError) {
+                            Log.e("Volley", "NoConnectionError");
+                        }else if(error instanceof NoConnectionError){
+                            Log.e("Volley", "NoConnectionError");
+                        } else if (error instanceof AuthFailureError) {
+                            Log.e("Volley", "AuthFailureError");
+                        } else if (error instanceof ServerError) {
+                            Log.e("Volley", "ServerError");
+                        } else if (error instanceof NetworkError) {
+                            Log.e("Volley", "NetworkError");
+                        } else if (error instanceof ParseError) {
+                            Log.e("Volley", "ParseError");
+                        }
+                    }
+                })
+
+        {
+
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+
 
 
     @Override
@@ -138,20 +203,40 @@ public class TurnoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_turno);
 
+        GlobalVariables appState = ((GlobalVariables)getApplicationContext());
+
         textViewTurno = (TextView) findViewById(R.id.TextViewTurno);
+
+        botoncancelar = (Button) findViewById(R.id.Cancelar);
+
 
         Intent intent = getIntent();
         IdSede=intent.getExtras().getString("IDSEDE");
         IdServicio=intent.getExtras().getString("IDSERVICIO");
-        correo1 = intent.getExtras().getString("CORREO1");
         nomEntidad = intent.getExtras().getString("NomEntity");
         nomSede = intent.getExtras().getString("NomSede");
         nomServicio = intent.getExtras().getString("NomServicio");
 //
 
-        Log.e(TAG, "Correo: "+correo1+" Idsede: "+IdSede+" IdServicio: "+IdServicio);
+        Log.e(TAG, "Correo: "+appState.getUserId()+" Idsede: "+IdSede+" IdServicio: "+IdServicio);
 
-        pedirTurno(correo1,IdSede,IdServicio);
+        pedirTurno(appState.getUserId(),IdSede,IdServicio);
+
+        Log.e(TAG, "TURNOOOO: "+appState.getUserId()+" ID: "+textViewTurno.getText().toString());
+
+        botoncancelar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.Cancelar:
+
+                      // CancelarTurno();
+                        Intent intent  = new Intent(TurnoActivity.this,ActivityUserProfile.class);
+                        startActivity(intent);
+
+                        break;
+                }
+            }
+        });
 
         getID();
 
@@ -166,7 +251,7 @@ public class TurnoActivity extends AppCompatActivity {
 
                 try {
                     synchronized (this) {
-                        wait(5000);
+                       wait(10);
 // runOnUiThread method used to do UI task in main thread.
                         runOnUiThread(new Runnable() {
                             @Override
@@ -226,4 +311,6 @@ public class TurnoActivity extends AppCompatActivity {
         bitmap.setPixels(pixels, 0, 500, 0, 0, w, h);
         return bitmap;
     } /// end of this method
+
+
 }

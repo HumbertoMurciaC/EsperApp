@@ -134,8 +134,6 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
 
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +150,9 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
 
         Intent intent = getIntent();
 
-        textViewUsername.setText("Welcome User " + intent.getStringExtra(LoginActivity.KEY_USERNAME));
+        textViewUsername.setText("Welcome User " + (intent.getStringExtra(LoginActivity.KEY_USERNAME)));
+
+
 
         Correo=intent.getStringExtra(LoginActivity.KEY_USERNAME);
 

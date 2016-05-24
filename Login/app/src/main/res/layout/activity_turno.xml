@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:fitsSystemWindows="true">
-
-
     <TextView
-        android:id="@+id/TextViewTurno"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Turno: "
-        android:textSize="30sp"
-        android:textStyle="bold"
         android:textColor="#080909"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="left" />
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:text="Turno: " />
+    <TextView
+        android:id="@+id/TextViewTurno"
+        android:layout_gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="#0c1472"/>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_width = "350dp"
+        android:layout_height= "350dp"
         android:id="@+id/img_qr_code_image"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        />
+
+    <Button
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar turno"
+        android:id="@+id/Cancelar"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:background="#00CCFF"
+        android:layout_marginTop="10dp"
+        android:textColor="#ffffff"/>
+
 
 </LinearLayout>
