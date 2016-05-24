@@ -62,6 +62,7 @@ public class ActivitySede extends AppCompatActivity{
     public static String NomEntidad;
     public static String IDSEDE="";
     public static String NomServicio;
+    public static String NombreCompletoEntidad;
     public static String IDSERVICIO="";
     public static String CORREO1="";
     public float distancia;
@@ -167,6 +168,7 @@ public class ActivitySede extends AppCompatActivity{
 
                     for(Servicio c: listaServicios ) {
                         Log.d(TAG, "Servicio:"+c.getTipo());
+
                     }
 
                     CargarSpinner2(listaServicios);
@@ -294,6 +296,9 @@ public class ActivitySede extends AppCompatActivity{
 
 
                         intent2.putExtra("IDSEDE",IDSE);
+                        intent2.putExtra("NomEntity",NombreCompletoEntidad);
+                        intent2.putExtra("NomSede",NomEntidad);
+                        intent2.putExtra("NomServicio",NomServicio);
                         intent2.putExtra("IDSERVICIO",IDS);
                         intent2.putExtra("CORREO1",correo);
                         startActivity(intent2);
@@ -311,7 +316,7 @@ public class ActivitySede extends AppCompatActivity{
         textViewNomEntidad = (TextView) findViewById(R.id.textViewNomEntidad);
 
         textViewNomEntidad.setText(intent.getStringExtra(ActivityUserProfile.NomEntidad));
-
+        NombreCompletoEntidad = intent.getStringExtra(ActivityUserProfile.NomEntidad);
         nit=intent.getStringExtra(ActivityUserProfile.Nit);
         correo=intent.getStringExtra(ActivityUserProfile.CORREO);
 
@@ -388,6 +393,8 @@ public class ActivitySede extends AppCompatActivity{
         return "";
 
     }
+
+
 
     String DevolverDir(String nom){
 
