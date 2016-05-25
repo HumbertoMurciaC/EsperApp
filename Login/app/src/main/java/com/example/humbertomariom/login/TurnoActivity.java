@@ -51,12 +51,12 @@ public class TurnoActivity extends AppCompatActivity {
     private String nomServicio="";
     private String nomSede="";
     private String TurnOOO="";
-
+    private String QRcode="";
 
 
 
     ImageView qrCodeImageview;
-    String QRcode;
+
     String IDT="";
     public final static int WIDTH=500;
 
@@ -99,8 +99,9 @@ public class TurnoActivity extends AppCompatActivity {
                    // QRcode=obj.getResponse();
                     textViewTurno.setText(obj.getResponse());
 
+                    QRcode=textViewTurno.getText().toString();
 
-
+                    Log.e(TAG,"Turno333: "+QRcode);
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Usuario ya existe!, por favor ingrese otro", Toast.LENGTH_LONG).show();
@@ -144,10 +145,10 @@ public class TurnoActivity extends AppCompatActivity {
 
     }
 
-    public void CancelarTurno(String IdTurno) {
+    public void CancelarTurno() {
 
 
-        String data = REGISTER_URL2+"?"+"idTurno="+IdTurno;
+        String data = REGISTER_URL2+"?"+"idTurno="+QRcode;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, data, new Response.Listener<String>() {
 
@@ -216,20 +217,23 @@ public class TurnoActivity extends AppCompatActivity {
         nomEntidad = intent.getExtras().getString("NomEntity");
         nomSede = intent.getExtras().getString("NomSede");
         nomServicio = intent.getExtras().getString("NomServicio");
-//
 
+
+//
         Log.e(TAG, "Correo: "+appState.getUserId()+" Idsede: "+IdSede+" IdServicio: "+IdServicio);
 
         pedirTurno(appState.getUserId(),IdSede,IdServicio);
 
-        Log.e(TAG, "TURNOOOO: "+appState.getUserId()+" ID: "+textViewTurno.getText().toString());
+        Log.e(TAG, "TURNOOOO: "+appState.getUserId());
+
+
 
         botoncancelar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.Cancelar:
 
-                      // CancelarTurno();
+                        CancelarTurno();
                         Intent intent  = new Intent(TurnoActivity.this,ActivityUserProfile.class);
                         startActivity(intent);
 

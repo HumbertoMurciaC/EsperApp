@@ -39,6 +39,7 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
     private Spinner spinner;
     private List<Entidad> listaEntidades;
     private Button buttonEntidad;
+    private Button buttonHistorial;
     ArrayAdapter adapter;
     public static String NomEntidad="";
     public static String Nit="";
@@ -139,6 +140,22 @@ public class ActivityUserProfile extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_userprofile);
+
+        buttonHistorial = (Button) findViewById(R.id.botonHistT);
+        buttonHistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.botonHistT:
+
+                        Intent intent = new Intent(ActivityUserProfile.this, HistorialActivity.class);
+
+                        startActivity(intent);
+
+                        break;
+                }
+            }
+        });
 
         buttonEntidad = (Button) findViewById(R.id.buttonEntidades);
 

@@ -5,8 +5,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class Turno {
 
     private String atendido;
-    private XMLGregorianCalendar fecha;
+    private String idTurno;
+    private String numTurno;
     private Sede sede;
+    private Servicio servicioID;
     private Usuario usuario;
 
     public String getAtendido() {
@@ -17,12 +19,21 @@ public class Turno {
         this.atendido = atendido;
     }
 
-    public XMLGregorianCalendar getFecha() {
-        return fecha;
+
+    public String getIdTurno() {
+        return idTurno;
     }
 
-    public void setFecha(XMLGregorianCalendar fecha) {
-        this.fecha = fecha;
+    public void setIdTurno(String idTurno) {
+        this.idTurno = idTurno;
+    }
+
+    public String getNumTurno() {
+        return numTurno;
+    }
+
+    public void setNumTurno(String numTurno) {
+        this.numTurno = numTurno;
     }
 
     public Sede getSede() {
@@ -31,5 +42,21 @@ public class Turno {
 
     public void setSede(Sede sede) {
         this.sede = sede;
+    }
+
+    public Servicio getServicioID() {
+        return servicioID;
+    }
+
+    public void setServicioID(Servicio servicioID) {
+        this.servicioID = servicioID;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

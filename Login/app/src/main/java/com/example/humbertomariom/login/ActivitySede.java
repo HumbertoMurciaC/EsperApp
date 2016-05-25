@@ -288,7 +288,7 @@ public class ActivitySede extends AppCompatActivity{
 
                     case R.id.Turno:
 
-
+                        if(distancia <= 3000){
                         Intent intent2  = new Intent(ActivitySede.this,TurnoActivity.class);
 
                         String IDSE=DevolverIdSede(NomEntidad);
@@ -302,7 +302,10 @@ public class ActivitySede extends AppCompatActivity{
                         intent2.putExtra("IDSERVICIO",IDS);
                         intent2.putExtra("CORREO1",correo);
                         startActivity(intent2);
-
+                        }else{
+                            String noPuede = "No puede solicitar un Turno porque esta a: "+distancia+" m";
+                            Toast.makeText(ActivitySede.this,noPuede,Toast.LENGTH_LONG).show();
+                        }
 
                         break;
 

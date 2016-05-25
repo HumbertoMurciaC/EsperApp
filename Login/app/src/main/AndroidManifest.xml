@@ -34,6 +34,7 @@
         <activity android:name=".ActivityUserProfile"></activity>
         <activity android:name=".ActivitySede"></activity>
         <activity android:name=".TurnoActivity"></activity>
+        <activity android:name=".HistorialActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
